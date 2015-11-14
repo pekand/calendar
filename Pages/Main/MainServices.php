@@ -6,12 +6,21 @@ use Core\ServiceContainer;
 
 class MainServices extends ServiceContainer {
 
+    private $config = null;
     private $database = null;
     private $template = null;
 
+    public function getConfigService() {
+        if (empty($this->config)) {
+            $this->config =  new \Config\Config();
+        }
+
+        return $this->config;
+    }
+
     public function getDatabaseService() {
         if (empty($this->database)) {
-            return new\Core\Database();
+            $this->database =  new \Core\Database();
         }
 
         return $this->database;
@@ -19,7 +28,8 @@ class MainServices extends ServiceContainer {
 
     public function getTemplateService() {
         if (empty($this->template)) {
-            return new\Core\Template();
+            $this->template =  new \Core\Template();
+            $this->template->setContainer($this->container);
         }
 
         return $this->template;

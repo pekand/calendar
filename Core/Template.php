@@ -7,8 +7,21 @@ namespace Core;
   */
   class Template extends Service
   {
-      public function render($path, $params = array())
-      {
 
-      }
+    private $config = null;
+
+    public function __construct() {
+
+    }
+
+    public function render($path, $params = array())
+    {
+        $this->config = $this->container->get('Config');
+
+        if (file_exists($path)) {
+
+        }
+
+        return null;
+    }
   }

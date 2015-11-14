@@ -28,12 +28,13 @@ class WebPage {
         foreach ($files as $name => $file) {
             if(preg_match("/^.+\/([^\/]+)\/([^\/]+)Services.php$/", $name, $m))
             {
-                var_dump($m);
+                //var_dump($m);
                 //echo $name."<br/>";
                 $className = 'Pages\\' . $m[1] .'\\' . $m[2]. 'Services';
 
                 $services = new $className();
                 if ($services instanceof ServiceContainer) {
+                    $services->setContainer($this->services);
                     $this->services->add($services);
                 }
             }
@@ -58,6 +59,7 @@ class WebPage {
 
                 $router = new $className($this->request);
                 if ($router instanceof Router) {
+                    $router->setContainer($this->services);
                     $response = $router->check();
                 }
             }

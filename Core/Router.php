@@ -2,7 +2,8 @@
 
 namespace Core;
 
-class Router {
+abstract class Router extends Container {
+
     public function __construct(Request $request) {
         $this->request = $request;
     }

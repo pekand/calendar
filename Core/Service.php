@@ -2,9 +2,5 @@
 
 namespace Core;
 
-class Service {
-    public function __construct()
-    {
-
-    }
+abstract class Service extends Container {
 }

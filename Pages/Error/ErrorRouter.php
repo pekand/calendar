@@ -11,7 +11,8 @@ class ErrorRouter extends Router {
 
     private function getController() {
         if (empty($this->controler)) {
-            return new ErrorController;
+            $this->controller = new ErrorController();
+            $this->controller->setContainer($this->container);
         }
 
         return $this->controller;

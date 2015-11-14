@@ -2,6 +2,6 @@
 
 namespace Core;
 
-class ServiceContainer {
+abstract class ServiceContainer extends Container {
 
 }

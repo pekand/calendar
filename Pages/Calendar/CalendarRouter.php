@@ -12,7 +12,7 @@ class CalendarRouter extends Router {
 
     private function getController() {
         if (empty($this->controler)) {
-            return new CalendarController;
+            return new CalendarController($this->services);
         }
 
         return $this->controller;
