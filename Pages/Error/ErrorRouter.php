@@ -19,9 +19,10 @@ class ErrorRouter extends Router {
     }
 
     public function check() {
+        return null;
+    }
 
-        $this->setRequest($this->request);
-
+    public function showErrorPage() {
         return $this->getController()->errorAction();
     }
 }

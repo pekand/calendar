@@ -68,7 +68,8 @@ class WebPage {
         // novalid route found
         if (empty($response)) {
             $router = new \Pages\Error\ErrorRouter($this->request);
-             $response = $router->check($this->request);
+            $router->setContainer($this->services);
+            $response = $router->showErrorPage();
         }
 
         return $response;

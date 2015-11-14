@@ -11,10 +11,7 @@ class ErrorController extends Controller {
     public function errorAction () {
 
         $html = $this->container->get('Template')->render(
-            'Error\\Error',
-            array(
-                  'error' => '123'
-            )
+            'Error/Error'
         );
 
         return new Response($html);

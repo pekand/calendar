@@ -1,0 +1,24 @@
+
+body{
+ margin: 0px;
+}
+
+#errorstrip
+{
+  font-weight:bold;
+  height-min:26px;
+  width:100%;
+  top:200px;
+  position:relative;
+  padding:5px 0px 5px 30px;
+  background-color:#FF8080; 
+  border-bottom:1px #808080 solid;
+  border-right:1px #808080 solid;     
+
+  /*begin rounded corners*/  
+  border-radius: 5px; 
+  -moz-border-radius: 5px; 
+  -webkit-border-radius: 5px; 
+  border: 0px solid #800000;
+  /*end rounded corners*/
+}

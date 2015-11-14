@@ -8,18 +8,17 @@ namespace Core;
   class Template extends Service
   {
 
-    private $config = null;
-
-    public function __construct() {
-
-    }
-
     public function render($path, $params = array())
     {
-        $this->config = $this->container->get('Config');
+        $template = $this;
+        $config = $this->container->get('Config');
+        extract($params);
 
-        if (file_exists($path)) {
-
+        $templateFile = $config->pagespath . DIRECTORY_SEPARATOR . $path . "Template.php";
+        if (file_exists($templateFile)) {
+            ob_start();
+            include $templateFile;
+            return ob_get_clean();
         }
 
         return null;
