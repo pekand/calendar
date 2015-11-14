@@ -5,16 +5,22 @@ namespace Core;
 class Request {
     private $url = null;
 
-    function __construct($url) {
-        $this->url = $url;
+    function __construct() {
     }
 
     function getUrl() {
-        return $this->url;
+        return @$_REQUEST['u'];
     }
 
-    function setUrl() {
-        $this->url = $url;
-        return $this;
+    function getParams() {
+        return $_REQUEST;
+    }
+
+    function getParam($name) {
+        return isset($_REQUEST[$name]) ? $_REQUEST[$name] : null;
+    }
+
+    function getMethod() {
+        return $_SERVER['REQUEST_METHOD'];
     }
 }

@@ -1,6 +1,6 @@
 <?php
     foreach ($js as $script) {
-        echo '<script src="'.$script.'">\n';
+        echo '<script type="text/javascript" src="'.$script.'" ></script>';
     }
 ?>
 </body>

@@ -4,7 +4,8 @@ namespace Config;
 
 class Config {
 
-    public $dbanme = 'root';
+    public $dbanme = 'calendar';
+    public $dbuser = 'root';
     public $dbpassword = 'root';
     public $dbhost = '127.0.0.1';
 

@@ -20,7 +20,8 @@ class MainServices extends ServiceContainer {
 
     public function getDatabaseService() {
         if (empty($this->database)) {
-            $this->database =  new \Core\Database();
+            $config = $this->container->get('Config');
+            $this->database =  new \Core\Database($config->dbanme, $config->dbuser, $config->dbpassword, $config->dbhost);
         }
 
         return $this->database;

@@ -1,11 +1,9 @@
 <?php
 namespace Core;
 
-use Pages\Note\Note;
-
 include '../autoloader.php';
 
-$request = new Request(@$_REQUEST['u']);
+$request = new Request();
 
 $webpage = new WebPage(
     $request

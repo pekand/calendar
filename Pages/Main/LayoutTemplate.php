@@ -3,7 +3,7 @@
   <meta charset="utf-8">
   <title><?= @$title ?></title>
   <link rel="icon" type="image/png" href="/img/clock.ico" />
-  <meta name="viewport" content="target-densitydpi=device-dpi, width=device-width, initial-scale=1, user-scalable=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <?php
     if (isset($css))

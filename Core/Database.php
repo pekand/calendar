@@ -2,7 +2,7 @@
 
 namespace Core;
 
-class Database {
+class Database extends Service{
     private $db;
     private $dbname;
     private $user;
@@ -20,9 +20,9 @@ class Database {
     }
 
     public function open() {
-        $this->db = new PDO("mysql:host={$this->host};dbname={$this->dbname};charset=utf8", $this->user, $this->password);
-        $this->db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-        $this->db->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
+        $this->db = new \PDO("mysql:host={$this->host};dbname={$this->dbname};charset=utf8", $this->user, $this->password);
+        $this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
+        $this->db->setAttribute(\PDO::ATTR_EMULATE_PREPARES, false);
 
         if($this->db){
             return true;
@@ -37,7 +37,7 @@ class Database {
     }
 
     // $query = 'SELECT * FROM table WHERE id = :id'
-    // $params = array('id'=>$id)
+    // $params = array(':id'=>$id)
     public function query($query, $params = array(), $fetch = true) {
         $this->error = null;
         try {
@@ -45,7 +45,7 @@ class Database {
             if($stmt->execute($params)) {
 
                 if ($fetch && $stmt->rowCount() > 0) {
-                    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                    $rows = $stmt->fetchAll(\PDO::FETCH_ASSOC);
                     return $rows;
                 }
 
@@ -53,7 +53,7 @@ class Database {
             } else {
                 $this->error = $this->db->errorInfo();
             }
-        } catch(PDOException $ex) {
+        } catch(\PDOException $ex) {
             $this->error = $ex->getMessage();
         }
 
