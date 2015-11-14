@@ -66,7 +66,7 @@
 
             if(event.event_type == 'event') {
               var data=new Object();
-              data.id_event = event.id;
+              data.id = event.id;
               $.ajax({  // GET EVENT WINDOW with ajax
                 async:false,
                 type: 'POST',
@@ -82,7 +82,7 @@
           },
           eventResize: function(event, delta, revertFunc, jsEvent, ui, view) { // EVENT RESIZE
               var data=new Object();
-              data.id_event = event.id;
+              data.id = event.id;
               data.delta = delta.asMinutes();
 
               $.ajax({  // move event
@@ -96,7 +96,7 @@
           },
           eventDrop: function(event, delta, revertFunc, jsEvent, ui, view) { // MOVE EVENT
             var data=new Object();
-            data.id_event = event.id;
+            data.id = event.id;
             data.delta = delta.asMinutes();
 
             if (shift.shifted) {
@@ -119,7 +119,7 @@
               $.ajax({  // move event
                 async:false,
                 type: 'POST',
-                url:"/move-event",
+                url:"/calendar/move-event",
                 data:data,
                 success:function(result){
                 }
@@ -163,10 +163,9 @@
                 note: note,
                 tags: tags
             },
-            function(data) {
+            function(res) {
               try
               {
-                var res = JSON.parse(data);
                 calendar.fullCalendar('renderEvent',
                   {
                     id:res.id,
@@ -193,7 +192,7 @@
 
     function saveevent(uid, start, end, allDay)
     {
-        var id_event = $('#'+uid+'_eventid').val();
+        var id = $('#'+uid+'_eventid').val();
         var title = $('#'+uid+'_eventname').val();
         var note = $('#'+uid+'_eventnote').val();
         var tags = $('#'+uid+'_eventtags').val();
@@ -202,7 +201,7 @@
           jQuery.post(
               '/calendar/save-event',
               {
-                  id_event:id_event,
+                  id:id,
                   title: title,
                   start: start,
                   end: end,
@@ -210,11 +209,9 @@
                   note: note,
                   tags: tags
               },
-              function(data) {
+              function(res) {
                 try
                 {
-                  var res = JSON.parse(data);
-
                   clickedevent.title = res.title;
                   clickedevent.description = res.description;
                   clickedevent.start = res.start;

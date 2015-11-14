@@ -66,7 +66,42 @@ class CalendarRouter extends Router {
         {
             $start = $this->request->getParam('start');
             $end = $this->request->getParam('end');
-            return $this->getController()->insertEventAction($start, $end);
+            $title = $this->request->getParam('title');
+            $tags = $this->request->getParam('tags');
+            $note = $this->request->getParam('note');
+            $allDay = $this->request->getParam('allDay');
+            return $this->getController()->insertEventAction($start, $end, $title, $tags, $note, $allDay);
+        }
+
+        if(preg_match('/^calendar\/save-event$/', $url, $m))
+        {
+            $id = $this->request->getParam('id');
+            $start = $this->request->getParam('start');
+            $end = $this->request->getParam('end');
+            $title = $this->request->getParam('title');
+            $tags = $this->request->getParam('tags');
+            $note = $this->request->getParam('note');
+            $allDay = $this->request->getParam('allDay');
+            return $this->getController()->updateEventAction($id, $start, $end, $title, $tags, $note, $allDay);
+        }
+
+        if(preg_match('/^calendar\/move-event$/', $url, $m))
+        {
+            $id = $this->request->getParam('id');
+            $delta = $this->request->getParam('delta');
+            return $this->getController()->moveEventAction($id, $delta);
+        }
+
+        if(preg_match('/^calendar\/copy-event$/', $url, $m))
+        {
+            $id = $this->request->getParam('id');
+            return $this->getController()->copyEventAction($id, $delta);
+        }
+
+        if(preg_match('/^calendar\/delete-event$/', $url, $m))
+        {
+            $id = $this->request->getParam('id');
+            return $this->getController()->deleteEventAction($id);
         }
 
         return null;

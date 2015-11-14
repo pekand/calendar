@@ -36,8 +36,7 @@ class Database extends Service{
       return true;
     }
 
-    // $query = 'SELECT * FROM table WHERE id = :id'
-    // $params = array(':id'=>$id)
+
     public function query($query, $params = array(), $fetch = true) {
         $this->error = null;
         try {

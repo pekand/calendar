@@ -89,13 +89,14 @@ class CalendarRepository extends Service
                 'event_type' => $value['typ'],
                 'textColor'=> '#000000',
                 'description' => $value['note'],
+                'tags' => $value['tags'],
             );
         }
 
-        return $events;
+        return $event;
     }
 
-    public function insertEvent($start, $end, $title="", $tags="", $note="")
+    public function insertEvent($start, $end, $title, $tags, $note, $allDay)
     {
         $db = $this->container->get('Database');
 
@@ -115,7 +116,7 @@ class CalendarRepository extends Service
         return $db->lastId();
     }
 
-    public function updateEvent($id, $start, $end, $title="", $tags="", $note="")
+    public function updateEvent($id, $start, $end, $title, $tags, $note)
     {
         $db = $this->container->get('Database');
 
@@ -127,7 +128,7 @@ class CalendarRepository extends Service
             name=:title,
             tags=:tags,
             note=:note
-          WHERE id = :id'
+          WHERE id = :id;
             ", array(
                 ":id"=>$id,
                 ":start"=>$start,
@@ -147,7 +148,7 @@ class CalendarRepository extends Service
 
         $result = $db->query("
           DELETE FROM calendar
-          WHERE id = :id'
+          WHERE id = :id
             ", array(
                 ":id"=>$id
             )
@@ -179,12 +180,13 @@ class CalendarRepository extends Service
         $result = $db->query("
             UPDATE calendar
             SET
-            event_begin = event_begin + INTERVAL :delta MINUTE,
-            event_end= event_end + INTERVAL :delta MINUTE
+            event_begin = event_begin + INTERVAL :delta1 MINUTE,
+            event_end= event_end + INTERVAL :delta2 MINUTE
             WHERE id = :id
             ", array(
-                ":id"=>$id
-                ":delta"=>$delta
+                ":id"=>$id,
+                ":delta1"=>$delta+0,
+                ":delta2"=>$delta+0
             )
         );
 
@@ -201,8 +203,8 @@ class CalendarRepository extends Service
                 event_end= event_end + INTERVAL :delta MINUTE
             WHERE id = :id
             ", array(
-                ":id"=>$id
-                ":delta"=>$delta
+                ":id"=>$id,
+                ":delta"=>$delta+0
             )
         );
 
