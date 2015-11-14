@@ -85,7 +85,13 @@ class CalendarController extends Controller {
         return new JsonResponse($data);
     }
 
-    public function copyEventAction ($id) {
+    public function resizeEventAction ($id, $delta) {
+        $data = $this->container->get('CalendarManager')->resizeEvent($id, $delta);
+
+        return new JsonResponse($data);
+    }
+
+    public function copyEventAction ($id, $delta) {
         $data = $this->container->get('CalendarManager')->copyEvent($id, $delta);
 
         return new JsonResponse($data);

@@ -44,10 +44,10 @@ class CalendarManager extends Service
         return $id;
     }
 
-    public function copyEvent($id)
+    public function copyEvent($id, $delta)
     {
         $repository = $this->container->get('CalendarRepository');
-        $id = $repository->copyEvent($id);
+        $id = $repository->copyEvent($id, $delta);
         return $id;
     }
 

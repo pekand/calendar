@@ -9,7 +9,6 @@ use Core\Service;
 */
 class CalendarRepository extends Service
 {
-
     public function loadEvents($start, $end)
     {
         $db = $this->container->get('Database');
@@ -157,17 +156,20 @@ class CalendarRepository extends Service
         return $id;
     }
 
-    public function copyEvent($id)
+    public function copyEvent($id, $delta)
     {
         $db = $this->container->get('Database');
 
         $result = $db->query("
             INSERT INTO calendar (event_begin, event_end, name, tags, note)
-            SELECT event_begin, event_end, name, tags, note FROM calendar
+            SELECT event_begin + INTERVAL :delta1 MINUTE, event_end+ INTERVAL :delta2 MINUTE, name, tags, note FROM calendar
             WHERE id = :id
             ", array(
-                ":id"=>$id
-            )
+                ":id"=>$id,
+                ":delta1"=>$delta+0,
+                ":delta2"=>$delta+0
+            ),
+            false
         );
 
         return $db->lastId();

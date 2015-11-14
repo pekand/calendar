@@ -34,7 +34,7 @@
           axisFormat: 'HH:mm',
           columnFormat:{month: 'ddd', week: 'dd ddd', day: 'dddd M/d'},
           format:"yyyy.MM.dd",
-          aspectRatio: 0,
+          aspectRatio: 1.35,
           header: {
             left: 'prev,next today',
             center: 'title',

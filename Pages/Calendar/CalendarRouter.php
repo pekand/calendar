@@ -92,9 +92,17 @@ class CalendarRouter extends Router {
             return $this->getController()->moveEventAction($id, $delta);
         }
 
+        if(preg_match('/^calendar\/resize-event$/', $url, $m))
+        {
+            $id = $this->request->getParam('id');
+            $delta = $this->request->getParam('delta');
+            return $this->getController()->resizeEventAction($id, $delta);
+        }
+
         if(preg_match('/^calendar\/copy-event$/', $url, $m))
         {
             $id = $this->request->getParam('id');
+            $delta = $this->request->getParam('delta');
             return $this->getController()->copyEventAction($id, $delta);
         }
 

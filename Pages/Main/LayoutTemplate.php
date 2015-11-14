@@ -4,7 +4,7 @@
   <title><?= @$title ?></title>
   <link rel="icon" type="image/png" href="/img/clock.ico" />
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  <script type="text/javascript" src="/lib/fullcalendar-2.4.0/lib/jquery.min.js"></script>
 <?php
     if (isset($css))
         foreach ($css as $style) {
