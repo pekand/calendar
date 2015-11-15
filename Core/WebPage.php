@@ -72,13 +72,10 @@ class WebPage {
 
             // novalid route found
             if (empty($response)) {
-                $router = new \Pages\Error\ErrorRouter($this->request);
-                $router->setContainer($this->services);
-                $response = $router->showErrorPage();
+                throw new NotFoundException;
             }
 
         } catch (AccessForbiddenException $e) {
-
             // remember url
             $this->services->get('Security')->setReferer(
                 $this->request->getReferer()
@@ -88,6 +85,12 @@ class WebPage {
             $router = new \Pages\Login\LoginRouter($this->request);
             $router->setContainer($this->services);
             $response = $router->showLoginPage();
+
+        } catch (NotFoundException $e) {
+            // show error page
+            $router = new \Pages\Error\ErrorRouter($this->request);
+            $router->setContainer($this->services);
+            $response = $router->showErrorPage();
         }
 
         return $response;

@@ -9,6 +9,7 @@ class Security extends Service
 {
 
     private $userId = null;
+    private $user = null;
 
     function init() {
         $this->sessionStart();
@@ -27,9 +28,9 @@ class Security extends Service
     }
 
     function sessionSetDefaultValues() {
-        $this->userId = 0;
-
-        $_SESSION['uid'] = 0;
+        $this->userId = null;
+        $this->user = null;
+        $_SESSION['uid'] = null;
         $_SESSION['username'] = "";
         $_SESSION['referer'] = "";
     }
@@ -75,10 +76,8 @@ class Security extends Service
         return false;
     }
 
-    function login($username, $password) {
+    function checkCredentials($username, $password) {
         $db = $this->container->get('Database');
-
-        $username = $username;
 
         $result = $db->query(
             "SELECT * FROM users WHERE username = :username",
@@ -88,7 +87,6 @@ class Security extends Service
         );
 
         if (empty($result) ) {
-            $this->sessionSetDefaultValues();
             return false;
         }
 
@@ -98,35 +96,47 @@ class Security extends Service
         }
 
         $user = $result[0];
-        $this->userId = $user['id'];
-        $_SESSION['uid'] = $user['id'];
-        $_SESSION['username'] = $user['username'];
+        return $user;
+    }
 
-        return true;
+    function login($username, $password) {
+        $user = $this->checkCredentials($username, $password);
+        if ($user !== false) {
+            $this->forceLogin($user['id'], $username);
+        }
+
+        return $user;
     }
 
     function forceLogin($userId, $username) {
         $this->userId = $userId;
+        $this->user = null;
+        $this->user = getUser();
         $_SESSION['uid'] = $userId;
         $_SESSION['username'] = $username;
     }
 
     function logout() {
         $this->userId = null;
+        $this->user = null;
         session_start();
         session_destroy();
     }
 
     function getUser() {
-        if (empty($this->user)) {
+        if (empty($this->userId)) {
             return null;
+        }
+
+        if (!empty($this->user)) {
+            return $this->user;
         }
 
         $db = $this->container->get('Database');
         $result = $db->query(
             "SELECT * FROM users WHERE id = :id",
             array(
-                ":id"=>$this->user
+                ":id"=>$this->userId
             )
         );
 
@@ -135,6 +145,7 @@ class Security extends Service
         }
 
         $user = $result[0];
+        $this->user = $user;
         return $user;
     }
 

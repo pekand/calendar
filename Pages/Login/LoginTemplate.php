@@ -13,14 +13,14 @@
             <div class="account-wall">
                 <img class="profile-img" src="/img/logo.png"
                     alt="">
-                <form class="form-signin" method="POST" action="/login/check">
-                    <div class="form-group <?= ($error) ? 'has-error' : '' ?> has-feedback">
-                        <input name="username" type="text" class="form-control error" placeholder="Email Address" value="<?= $username ?>" required autofocus>
-                        <span class="glyphicon glyphicon-remove form-control-feedback <?= (!$error) ? 'hidden' : '' ?>" aria-hidden="true" style="padding: 6px" ></span>
+                <form class="form-signin" method="POST" action="/login">
+                    <div class="form-group <?= ($form->hasError('username')) ? 'has-error' : '' ?> has-feedback">
+                        <input name="username" type="text" class="form-control error" placeholder="Email Address" value="<?= $form->getValue('username') ?>" required autofocus>
+                        <span class="glyphicon glyphicon-remove form-control-feedback <?= (!$form->hasError('username')) ? 'hidden' : '' ?>" aria-hidden="true" style="padding: 6px" ></span>
                     </div>
-                    <div class="form-group <?= ($error) ? 'has-error' : '' ?> has-feedback">
+                    <div class="form-group <?= ($form->hasError('password')) ? 'has-error' : '' ?> has-feedback">
                           <input name="password" type="password" class="form-control error" placeholder="Password" required aria-describedby="inputError2Status">
-                          <span class="glyphicon glyphicon-remove form-control-feedback <?= (!$error) ? 'hidden' : '' ?>" aria-hidden="true" style="padding: 6px" ></span>
+                          <span class="glyphicon glyphicon-remove form-control-feedback <?= (!$form->hasError('password')) ? 'hidden' : '' ?>" aria-hidden="true" style="padding: 6px" ></span>
                     </div>
                     <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                 </form>

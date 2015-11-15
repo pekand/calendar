@@ -22,23 +22,19 @@ class LoginRouter extends Router {
 
         $url = $this->request->getUrl();
 
-        if(preg_match('/^login\/check$/', $url, $m))
+        if(preg_match('/^login$/', $url, $m))
         {
             $username = $this->request->getParam('username');
             $password = $this->request->getParam('password');
-            return $this->getController()->checkLoginAction($username, $password);
-        }
-
-        if(preg_match('/^login$/', $url, $m))
-        {
-            return $this->getController()->loginAction();
+            return $this->getController()->loginAction($username, $password);
         }
 
         if(preg_match('/^registration$/', $url, $m))
         {
             $username = $this->request->getParam('username');
             $password = $this->request->getParam('password');
-            return $this->getController()->registrationAction($username, $password);
+            $password_confirmation = $this->request->getParam('password_confirmation');
+            return $this->getController()->registrationAction($username, $password, $password_confirmation);
         }
 
         if(preg_match('/^logout/', $url, $m))
@@ -50,6 +46,6 @@ class LoginRouter extends Router {
     }
 
     public function showLoginPage() {
-        return $this->getController()->loginAction();
+        return $this->getController()->loginAction("", "");
     }
 }

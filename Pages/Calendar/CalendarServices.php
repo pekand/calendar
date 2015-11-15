@@ -8,6 +8,7 @@ class CalendarServices extends ServiceContainer {
 
     private $calendarManager = null;
     private $calendarRepository = null;
+    private $eventValidator = null;
 
     public function getCalendarManagerService() {
         if (empty($this->calendarManager)) {
@@ -25,6 +26,15 @@ class CalendarServices extends ServiceContainer {
         }
 
         return $this->calendarRepository;
+    }
+
+    public function getEventValidatorService() {
+        if (empty($this->eventValidator)) {
+            $this->eventValidator =  new \Pages\Calendar\EventValidator();
+            $this->eventValidator->setContainer($this->container);
+        }
+
+        return $this->eventValidator;
     }
 
 }

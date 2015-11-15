@@ -11,9 +11,10 @@ class CalendarManager extends Service
 {
     public function loadEvents($start, $end)
     {
+        $user = $this->container->get('Security')->getUser();
         $repository = $this->container->get('CalendarRepository');
 
-        return $repository->loadEvents($start, $end);
+        return $repository->loadEvents($start, $end, $user['id']);
     }
 
     public function getEvent($id)
@@ -25,15 +26,17 @@ class CalendarManager extends Service
 
     public function insertEvent($start, $end, $title, $tags, $note, $allDay)
     {
+        $user = $this->container->get('Security')->getUser();
         $repository = $this->container->get('CalendarRepository');
-        $id = $repository->insertEvent($start, $end, $title, $tags, $note, $allDay);
+        $id = $repository->insertEvent($user['id'], $start, $end, $title, $tags, $note, $allDay);
         return $repository->getEvent($id);
     }
 
     public function updateEvent($id, $start, $end, $title, $tags, $note, $allDay)
     {
+        $user = $this->container->get('Security')->getUser();
         $repository = $this->container->get('CalendarRepository');
-        $id = $repository->updateEvent($id, $start, $end, $title, $tags, $note, $allDay);
+        $id = $repository->updateEvent($id, $user['id'], $start, $end, $title, $tags, $note, $allDay);
         return $repository->getEvent($id);
     }
 

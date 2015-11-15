@@ -17,58 +17,66 @@ class LoginController extends Controller {
         $this->request = $request;
     }
 
-    public function loginAction () {
+    public function loginAction ($username, $password) {
+
+        $form = $this->container->get('LoginValidator');
+        $form->setParams(
+            array(
+                  'username' => $username,
+                  'password' => $password,
+            )
+        );
+
+        if ($this->request->isPost()) {
+            if ($form->validate()) {
+                $success = $this->container->get('Security')->login($username, $password);
+
+                 if ($success) {
+                    $referer = $this->container->get('Security')->getReferer();
+                    if (!empty($referer)) {
+                        return new RedirectResponse($referer);
+                    }
+
+                    return new RedirectResponse('/');
+                }
+            }
+        }
 
         $html = $this->container->get('Template')->render(
             'Login/Login',
             array(
-                  'error' => false,
-                  'username' => ''
+                  'form' => $form,
             )
         );
 
         return new Response($html);
     }
 
-    public function registrationAction ($username, $password) {
+    public function registrationAction ($username, $password, $password_confirmation) {
 
-        if ($this->request->isPost()) {
-            $userId = $this->container->get('Security')->createUser($username, $password);
-            if (!empty($userId)) {
-                $this->container->get('Security')->forceLogin($userId, $username);
-            }
-            return new RedirectResponse('/');
-        }
-
-        $html = $this->container->get('Template')->render(
-            'Login/Registration'
+        $form = $this->container->get('RegistrationValidator');
+        $form->setParams(
+            array(
+                  'username' => $username,
+                  'password' => $password,
+                  'password_confirmation' => $password_confirmation,
+            )
         );
 
-        return new Response($html);
-    }
-
-    public function checkLoginAction ($username, $password) {
-
-        $success = $this->container->get('Security')->login($username, $password);
-
-        if ($this->request->isAjax()) {
-            return new JsonResponse($success);
-        }
-
-        if ($success) {
-            $referer = $this->container->get('Security')->getReferer();
-            if (!empty($referer)) {
-                return new RedirectResponse($referer);
+        if ($this->request->isPost()) {
+            if ($form->validate()) {
+                $userId = $this->container->get('Security')->createUser($username, $password);
+                if (!empty($userId)) {
+                    $this->container->get('Security')->forceLogin($userId, $username);
+                }
+                return new RedirectResponse('/');
             }
-
-            return new RedirectResponse('/');
         }
 
         $html = $this->container->get('Template')->render(
-            'Login/Login',
+            'Login/Registration',
             array(
-                  'error' => true,
-                  'username' => $username
+                  'form' => $form,
             )
         );
 
