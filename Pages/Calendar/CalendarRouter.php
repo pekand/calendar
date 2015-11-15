@@ -34,11 +34,6 @@ class CalendarRouter extends Router {
         {
             $mode = $m[1];
             $cdate = $m[2];
-
-            if ($cdate == 'today') {
-                $cdate = date('Y-m-d');
-            }
-
             return $this->getController()->indexAction($mode, $cdate);
         }
 

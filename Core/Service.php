@@ -2,5 +2,5 @@
 
 namespace Core;
 
-abstract class Service extends Container {
+abstract class Service extends ContainerAware {
 }

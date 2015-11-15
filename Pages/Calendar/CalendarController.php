@@ -10,6 +10,11 @@ use Core\JsonResponse;
 class CalendarController extends Controller {
 
     public function indexAction ($mode, $cdate) {
+
+        if ($cdate == 'today') {
+            $cdate = date('Y-m-d');
+        }
+
         $html = $this->container->get('Template')->render(
             'Calendar/Calendar',
             array(

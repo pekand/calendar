@@ -3,7 +3,6 @@
 namespace Core;
 
 class Request {
-    private $url = null;
 
     function __construct() {
     }

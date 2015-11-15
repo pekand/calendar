@@ -61,6 +61,9 @@ class WebPage {
                 if ($router instanceof Router) {
                     $router->setContainer($this->services);
                     $response = $router->check();
+                    if (!empty($response)) {
+                        break;
+                    }
                 }
             }
         }

@@ -2,7 +2,7 @@
 
 namespace Core;
 
-abstract class Container {
+abstract class ContainerAware {
     public $container = null;
 
     public function setContainer(Services $services) {

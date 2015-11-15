@@ -24,7 +24,7 @@
         calendar = $('#calendar').fullCalendar({  // FULL CALENDAR OBJECT
           editable: true,
           firstDay:1,
-          height: window.innerHeight - 20,
+          height: window.innerHeight - 80,
           events: "/calendar/load-events",
           defaultView: mode,
           defaultDate: cdate,
@@ -141,7 +141,7 @@
         });
 
         window.onresize = function(event) {
-            $('#calendar').fullCalendar('option', 'height', window.innerHeight - 20);
+            $('#calendar').fullCalendar('option', 'height', window.innerHeight - 80);
         };
 
       });

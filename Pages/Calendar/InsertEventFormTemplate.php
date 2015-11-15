@@ -1,13 +1,13 @@
 <div id="<?=$uid?>_dialog" title="Event" style='display:none;' >
   <div><input type='hidden' id='<?=$uid?>_eventid' /></div>
-  <div><input type='text' id='<?=$uid?>_eventname' style='width:100%;' placeholder='Názov' /></div>
-  <div><input type='text' id='<?=$uid?>_eventtags' style='width:100%;margin-top:10px;' placeholder='Tagy' /></div>
+  <div><input type='text' id='<?=$uid?>_eventname' style='width:100%;' placeholder='Name' /></div>
+  <div><input type='text' id='<?=$uid?>_eventtags' style='width:100%;margin-top:10px;' placeholder='Tags' /></div>
   <div>
     <div style='float:left;' >
-      <input type='text' id='<?=$uid?>_eventstart' style='width:200px;margin-top:10px;margin-right:10px;' placeholder='Začiatok' value='<?=$start?>' />
+      <input type='text' id='<?=$uid?>_eventstart' style='width:200px;margin-top:10px;margin-right:10px;' placeholder='Start' value='<?=$start?>' />
     </div>
     <div style='float:left;' >
-      <input type='text' id='<?=$uid?>_eventend' style='width:200px;margin-top:10px;' placeholder='Koniec' value='<?=$end?>' />
+      <input type='text' id='<?=$uid?>_eventend' style='width:200px;margin-top:10px;' placeholder='End' value='<?=$end?>' />
     </div>
     <div style='clear:both;' ></div>
   </div>

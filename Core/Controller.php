@@ -4,5 +4,5 @@ namespace Core;
 
 use Core\Request;
 
-abstract class Controller extends Container {
+abstract class Controller extends ContainerAware {
 }
