@@ -13,10 +13,10 @@
             <div class="account-wall">
                 <img class="profile-img" src="/img/logo.png"
                     alt="">
-                <form class="form-signin">
+                <form class="form-signin" method="POST" action="/registration">
 
                 <div class="form-group">
-                    <input type="email" name="email" id="email" class="form-control input-sm" placeholder="Email Address" required autofocus>
+                    <input type="email" name="username" id="username" class="form-control input-sm" placeholder="Email Address" required autofocus>
                 </div>
 
                 <div class="row">

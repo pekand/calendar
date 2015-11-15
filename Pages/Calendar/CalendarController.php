@@ -11,6 +11,8 @@ class CalendarController extends Controller {
 
     public function indexAction ($mode, $cdate) {
 
+        $this->container->get('Security')->isLogged();
+
         if ($cdate == 'today') {
             $cdate = date('Y-m-d');
         }

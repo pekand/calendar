@@ -48,7 +48,7 @@ class Database extends Service{
                     return $rows;
                 }
 
-                return null;
+                return true;
             } else {
                 $this->error = $this->db->errorInfo();
             }

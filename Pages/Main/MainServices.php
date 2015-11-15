@@ -9,6 +9,7 @@ class MainServices extends ServiceContainer {
     private $config = null;
     private $database = null;
     private $template = null;
+    private $security = null;
 
     public function getConfigService() {
         if (empty($this->config)) {
@@ -34,5 +35,15 @@ class MainServices extends ServiceContainer {
         }
 
         return $this->template;
+    }
+
+    public function getSecurityService() {
+        if (empty($this->template)) {
+            $this->security =  new \Core\Security();
+            $this->security->setContainer($this->container);
+            $this->security->init();
+        }
+
+        return $this->security;
     }
 }

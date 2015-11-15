@@ -18,15 +18,8 @@
           <a class="navbar-brand" href="/">Calendar</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#year">Year</a></li>
-            <li><a href="#month">Month</a></li>
-            <li><a href="#week">Week</a></li>
-            <li><a href="#day">Day</a></li>
-            <li class="pull-right"><a href="#logout">Logout</a></li>
-          </ul>
            <ul class="nav navbar-nav pull-right">
-            <li class="pull-right"><a href="#logout">Logout</a></li>
+            <li><a href="/logout">Logout</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>

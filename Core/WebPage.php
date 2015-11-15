@@ -50,29 +50,44 @@ class WebPage {
             ),
             \RecursiveIteratorIterator::SELF_FIRST
         );
-        foreach ($files as $name => $file) {
-            if(preg_match("/^.+\/([^\/]+)\/([^\/]+)Router.php$/", $name, $m))
-            {
-                //var_dump($m);
-                //echo $name."<br/>";
-                $className = 'Pages\\' . $m[1] .'\\' . $m[2]. 'Router';
 
-                $router = new $className($this->request);
-                if ($router instanceof Router) {
-                    $router->setContainer($this->services);
-                    $response = $router->check();
-                    if (!empty($response)) {
-                        break;
+        try {
+            foreach ($files as $name => $file) {
+                if(preg_match("/^.+\/([^\/]+)\/([^\/]+)Router.php$/", $name, $m))
+                {
+                    //var_dump($m);
+                    //echo $name."<br/>";
+                    $className = 'Pages\\' . $m[1] .'\\' . $m[2]. 'Router';
+
+                    $router = new $className($this->request);
+                    if ($router instanceof Router) {
+                        $router->setContainer($this->services);
+                        $response = $router->check();
+                        if (!empty($response)) {
+                            break;
+                        }
                     }
                 }
             }
-        }
 
-        // novalid route found
-        if (empty($response)) {
-            $router = new \Pages\Error\ErrorRouter($this->request);
+            // novalid route found
+            if (empty($response)) {
+                $router = new \Pages\Error\ErrorRouter($this->request);
+                $router->setContainer($this->services);
+                $response = $router->showErrorPage();
+            }
+
+        } catch (AccessForbiddenException $e) {
+
+            // remember url
+            $this->services->get('Security')->setReferer(
+                $this->request->getReferer()
+            );
+
+            // show login page
+            $router = new \Pages\Login\LoginRouter($this->request);
             $router->setContainer($this->services);
-            $response = $router->showErrorPage();
+            $response = $router->showLoginPage();
         }
 
         return $response;

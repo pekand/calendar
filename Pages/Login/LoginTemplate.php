@@ -13,14 +13,16 @@
             <div class="account-wall">
                 <img class="profile-img" src="/img/logo.png"
                     alt="">
-                <form class="form-signin">
-                <input type="text" class="form-control" placeholder="Email" required autofocus>
-                <input type="password" class="form-control" placeholder="Password" required>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
-                    <?php /*<label class="checkbox pull-left">
-                    <input type="checkbox" value="remember-me">
-                    Remember me
-                </label> */?>
+                <form class="form-signin" method="POST" action="/login/check">
+                    <div class="form-group <?= ($error) ? 'has-error' : '' ?> has-feedback">
+                        <input name="username" type="text" class="form-control error" placeholder="Email Address" value="<?= $username ?>" required autofocus>
+                        <span class="glyphicon glyphicon-remove form-control-feedback <?= (!$error) ? 'hidden' : '' ?>" aria-hidden="true" style="padding: 6px" ></span>
+                    </div>
+                    <div class="form-group <?= ($error) ? 'has-error' : '' ?> has-feedback">
+                          <input name="password" type="password" class="form-control error" placeholder="Password" required aria-describedby="inputError2Status">
+                          <span class="glyphicon glyphicon-remove form-control-feedback <?= (!$error) ? 'hidden' : '' ?>" aria-hidden="true" style="padding: 6px" ></span>
+                    </div>
+                    <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
                 </form>
             </div>
             <a href="/registration" class="text-center new-account">Create an account </a>
