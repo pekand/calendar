@@ -1,17 +1,51 @@
-<div id="<?=$uid?>_dialog" title="Event" style='display:none;' >
-  <div><input type='hidden' id='<?=$uid?>_eventid' value='<?=$id?>' /></div>
-  <div><input type='text' id='<?=$uid?>_eventname' style='width:100%;' placeholder='Názov' value='<?=$name?>' /></div>
-  <div><input type='text' id='<?=$uid?>_eventtags' style='width:100%;margin-top:10px;' placeholder='Tagy' value='<?=$tags?>' /></div>
-  <div>
-    <div style='float:left;' >
-      <input type='text' id='<?=$uid?>_eventstart' style='width:200px;margin-top:10px;margin-right:10px;' placeholder='Začiatok' value='<?=$start?>' />
+<div  class="container" >
+  <div id="<?=$uid?>_dialog" title="Event" style='display:none;' class="row">
+        <div class="col-sm-12">
+                <form>
+                    <input type='hidden' id='<?=$uid?>_eventid' value='<?=htmlspecialchars($id)?>' />
+                    <div class="form-group">
+                        <input type='text' id='<?=$uid?>_eventname' style='width:100%;' placeholder='Name' class="form-control error" value='<?=htmlspecialchars($name)?>' />
+                    </div>
+                    <div class="form-group">
+                          <input type='text' id='<?=$uid?>_eventtags' style='width:100%;margin-top:10px;' placeholder='Tags' class="form-control" value='<?=htmlspecialchars($tags)?>' />
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                            <input type='text' id='<?=$uid?>_eventstart'  placeholder='Start' value='<?=$start?>' class="form-control input-sm" value='<?=htmlspecialchars($start)?>' />
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <input type='text' id='<?=$uid?>_eventend' placeholder='End' value='<?=$end?>' class="form-control input-sm" value='<?=htmlspecialchars($end)?>' />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                          <textarea  id='<?=$uid?>_eventnote' class="form-control"><?=htmlspecialchars($note)?></textarea>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <label class="checkbox-inline"><input type='checkbox' id='<?=$uid?>_eventallday' <?= $allDay ? 'checked': '' ?> />Whole day</label>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 col-sm-6 col-md-6">
+                            <div class="form-group">
+                                <select id='<?=$uid?>_repeatevent' >
+                                    <option value="0" >None</option>
+                                    <option value="1" <?=($repeatEvent==1)?'selected':''?>>Daily</option>
+                                    <option value="2" <?=($repeatEvent==2)?'selected':''?>>Per week</option>
+                                    <option value="3" <?=($repeatEvent==3)?'selected':''?>>Monthly</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+        </div>
     </div>
-    <div style='float:left;' >
-      <input type='text' id='<?=$uid?>_eventend' style='width:200px;margin-top:10px;' placeholder='Koniec' value='<?=$end?>' />
-    </div>
-    <div style='clear:both;' ></div>
-  </div>
-  <div style='width:100%;margin-top:10px;' ><textarea  id='<?=$uid?>_eventnote' style='width:100%;height:250px;'><?=$note?></textarea></div>
+</div>
 <script type="text/javascript" >
   $(document).ready(function() {
   $( "#<?=$uid?>_dialog" ).dialog({  // DIALOG
@@ -66,4 +100,4 @@
     }
   });
   //calendar.fullCalendar('unselect');
-});</script></div>
+});</script>

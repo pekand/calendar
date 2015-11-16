@@ -65,7 +65,8 @@ class CalendarRouter extends Router {
             $tags = $this->request->getParam('tags');
             $note = $this->request->getParam('note');
             $allDay = $this->request->getParam('allDay');
-            return $this->getController()->insertEventAction($start, $end, $title, $tags, $note, $allDay);
+            $repeatEvent = $this->request->getParam('repeatEvent');
+            return $this->getController()->insertEventAction($start, $end, $title, $tags, $note, $allDay, $repeatEvent);
         }
 
         if(preg_match('/^calendar\/save-event$/', $url, $m))
@@ -77,14 +78,16 @@ class CalendarRouter extends Router {
             $tags = $this->request->getParam('tags');
             $note = $this->request->getParam('note');
             $allDay = $this->request->getParam('allDay');
-            return $this->getController()->updateEventAction($id, $start, $end, $title, $tags, $note, $allDay);
+            $repeatEvent = $this->request->getParam('repeatEvent');
+            return $this->getController()->updateEventAction($id, $start, $end, $title, $tags, $note, $allDay, $repeatEvent);
         }
 
         if(preg_match('/^calendar\/move-event$/', $url, $m))
         {
             $id = $this->request->getParam('id');
             $delta = $this->request->getParam('delta');
-            return $this->getController()->moveEventAction($id, $delta);
+            $allDay = $this->request->getParam('allDay');
+            return $this->getController()->moveEventAction($id, $delta, $allDay);
         }
 
         if(preg_match('/^calendar\/resize-event$/', $url, $m))
@@ -98,7 +101,8 @@ class CalendarRouter extends Router {
         {
             $id = $this->request->getParam('id');
             $delta = $this->request->getParam('delta');
-            return $this->getController()->copyEventAction($id, $delta);
+            $allDay = $this->request->getParam('allDay');
+            return $this->getController()->copyEventAction($id, $delta, $allDay);
         }
 
         if(preg_match('/^calendar\/delete-event$/', $url, $m))

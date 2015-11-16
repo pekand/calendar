@@ -24,19 +24,19 @@ class CalendarManager extends Service
         return $repository->getEvent($id);
     }
 
-    public function insertEvent($start, $end, $title, $tags, $note, $allDay)
+    public function insertEvent($start, $end, $title, $tags, $note, $allDay, $repeatEvent)
     {
         $user = $this->container->get('Security')->getUser();
         $repository = $this->container->get('CalendarRepository');
-        $id = $repository->insertEvent($user['id'], $start, $end, $title, $tags, $note, $allDay);
+        $id = $repository->insertEvent($user['id'], $start, $end, $title, $tags, $note, $allDay, $repeatEvent);
         return $repository->getEvent($id);
     }
 
-    public function updateEvent($id, $start, $end, $title, $tags, $note, $allDay)
+    public function updateEvent($id, $start, $end, $title, $tags, $note, $allDay, $repeatEvent)
     {
         $user = $this->container->get('Security')->getUser();
         $repository = $this->container->get('CalendarRepository');
-        $id = $repository->updateEvent($id, $user['id'], $start, $end, $title, $tags, $note, $allDay);
+        $id = $repository->updateEvent($id, $user['id'], $start, $end, $title, $tags, $note, $allDay, $repeatEvent);
         return $repository->getEvent($id);
     }
 
@@ -47,17 +47,17 @@ class CalendarManager extends Service
         return $id;
     }
 
-    public function copyEvent($id, $delta)
+    public function copyEvent($id, $delta, $allDay)
     {
         $repository = $this->container->get('CalendarRepository');
-        $id = $repository->copyEvent($id, $delta);
+        $id = $repository->copyEvent($id, $delta, $allDay);
         return $id;
     }
 
-     public function moveEvent($id, $delta)
+     public function moveEvent($id, $delta, $allDay)
     {
         $repository = $this->container->get('CalendarRepository');
-        $id = $repository->moveEvent($id, $delta);
+        $id = $repository->moveEvent($id, $delta, $allDay);
         return $id;
     }
 

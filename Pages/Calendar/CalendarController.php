@@ -6,6 +6,7 @@ use Core\Controller;
 use Core\Request;
 use Core\Response;
 use Core\JsonResponse;
+use Core\NotFoundException;
 
 class CalendarController extends Controller {
 
@@ -57,7 +58,7 @@ class CalendarController extends Controller {
             throw new NotFoundException;
         }
 
-        $this->container->get('Security')->isUser($event['user_id']);
+        $this->container->get('Security')->isOwner($event['user_id']);
 
         srand(floor(time() / (60*60*24)));
 
@@ -71,6 +72,8 @@ class CalendarController extends Controller {
                 'name' => $event['title'],
                 'note' => $event['description'],
                 'tags' => $event['tags'],
+                'allDay' => $event['allDay'],
+                'repeatEvent' => $event['repeatEvent'],
             )
         );
 
@@ -86,9 +89,9 @@ class CalendarController extends Controller {
         return new JsonResponse($data);
     }
 
-    public function insertEventAction ($start, $end, $title, $tags, $note, $allDay) {
+    public function insertEventAction ($start, $end, $title, $tags, $note, $allDay, $repeatEvent) {
         $this->container->get('Security')->isLogged();
-        
+
         $form = $this->container->get('EventValidator');
         $form->setParams(
             array(
@@ -98,13 +101,14 @@ class CalendarController extends Controller {
                   'tags' => $tags,
                   'note' => $note,
                   'allDay' => $allDay,
+                  'repeatEvent' => $repeatEvent,
             )
         );
 
         if ($form->validate('insert')) {
             $data = $this->container
                 ->get('CalendarManager')
-                ->insertEvent($start, $end, $title, $tags, $note, $allDay);
+                ->insertEvent($start, $end, $title, $tags, $note, $allDay, $repeatEvent);
         } else {
             $data = array( 'errors' => $form->getErrors());
         }
@@ -112,7 +116,15 @@ class CalendarController extends Controller {
         return new JsonResponse($data);
     }
 
-    public function updateEventAction ($id, $start, $end, $title, $tags, $note, $allDay) {
+    public function updateEventAction ($id, $start, $end, $title, $tags, $note, $allDay, $repeatEvent) {
+        $event = $this->container->get('CalendarManager')->getEvent($id);
+
+        if (empty($event)) {
+            throw new NotFoundException;
+        }
+
+        $this->container->get('Security')->isOwner($event['user_id']);
+
         $form = $this->container->get('EventValidator');
         $form->setParams(
             array(
@@ -123,13 +135,14 @@ class CalendarController extends Controller {
                   'tags' => $tags,
                   'note' => $note,
                   'allDay' => $allDay,
+                  'repeatEvent' => $repeatEvent,
             )
         );
 
         if ($form->validate('update')) {
             $data = $this->container
                 ->get('CalendarManager')
-                ->updateEvent($id, $start, $end, $title, $tags, $note, $allDay);
+                ->updateEvent($id, $start, $end, $title, $tags, $note, $allDay, $repeatEvent);
         } else {
             $data = array( 'errors' => $form->getErrors());
         }
@@ -137,23 +150,41 @@ class CalendarController extends Controller {
         return new JsonResponse($data);
     }
 
-    public function moveEventAction ($id, $delta) {
+    public function moveEventAction ($id, $delta, $allDay) {
+        $event = $this->container->get('CalendarManager')->getEvent($id);
+
+        if (empty($event)) {
+            throw new NotFoundException;
+        }
+
+        $this->container->get('Security')->isOwner($event['user_id']);
+
         $form = $this->container->get('EventValidator');
         $form->setParams(
             array(
                   'id' => $id,
                   'delta' => $delta,
+                  'allDay' => $allDay,
             )
         );
 
+        $data = array();
         if ($form->validate('move')) {
-            $data = $this->container->get('CalendarManager')->moveEvent($id, $delta);
+            $data = $this->container->get('CalendarManager')->moveEvent($id, $delta, $allDay);
         }
 
         return new JsonResponse($data);
     }
 
     public function resizeEventAction ($id, $delta) {
+        $event = $this->container->get('CalendarManager')->getEvent($id);
+
+        if (empty($event)) {
+            throw new NotFoundException;
+        }
+
+        $this->container->get('Security')->isOwner($event['user_id']);
+
         $form = $this->container->get('EventValidator');
         $form->setParams(
             array(
@@ -162,6 +193,7 @@ class CalendarController extends Controller {
             )
         );
 
+        $data = array();
         if ($form->validate('move')) {
             $data = $this->container->get('CalendarManager')->resizeEvent($id, $delta);
         }
@@ -169,33 +201,42 @@ class CalendarController extends Controller {
         return new JsonResponse($data);
     }
 
-    public function copyEventAction ($id, $delta) {
+    public function copyEventAction ($id, $delta, $allDay) {
+        $event = $this->container->get('CalendarManager')->getEvent($id);
+
+        if (empty($event)) {
+            throw new NotFoundException;
+        }
+
+        $this->container->get('Security')->isOwner($event['user_id']);
+
         $form = $this->container->get('EventValidator');
         $form->setParams(
             array(
                   'id' => $id,
                   'delta' => $delta,
+                  'allDay' => $allDay,
             )
         );
 
+        $data = array();
         if ($form->validate('move')) {
-            $data = $this->container->get('CalendarManager')->copyEvent($id, $delta);
+            $data = $this->container->get('CalendarManager')->copyEvent($id, $delta, $allDay);
         }
 
         return new JsonResponse($data);
     }
 
     public function deleteEventAction ($id) {
-        $form = $this->container->get('EventValidator');
-        $form->setParams(
-            array(
-                  'id' => $id,
-            )
-        );
+        $event = $this->container->get('CalendarManager')->getEvent($id);
 
-        if ($form->validate('delete')) {
-            $data = $this->container->get('CalendarManager')->deleteEvent($id);
+        if (empty($event)) {
+            throw new NotFoundException;
         }
+
+        $this->container->get('Security')->isOwner($event['user_id']);
+
+        $data = $this->container->get('CalendarManager')->deleteEvent($id);
 
         return new JsonResponse($data);
     }

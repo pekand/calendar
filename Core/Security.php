@@ -111,7 +111,7 @@ class Security extends Service
     function forceLogin($userId, $username) {
         $this->userId = $userId;
         $this->user = null;
-        $this->user = getUser();
+        $this->user = $this->getUser();
         $_SESSION['uid'] = $userId;
         $_SESSION['username'] = $username;
     }
@@ -177,7 +177,7 @@ class Security extends Service
         return true;
     }
 
-    function isUser($userId) {
+    function isOwner($userId) {
         if (empty($this->userId) || $this->userId != $userId) {
             throw new AccessForbiddenException;
         }

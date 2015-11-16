@@ -64,7 +64,7 @@
           },
           eventClick: function(event, jsEvent, view) { // OPEN EVENT DBCLICK
 
-            if(event.event_type == 'event') {
+            if(event.event_type == 'event' && event.editable == true) {
               var data=new Object();
               data.id = event.id;
               $.ajax({  // GET EVENT WINDOW with ajax
@@ -85,7 +85,7 @@
               data.id = event.id;
               data.delta = delta.asMinutes();
 
-              $.ajax({  // move event
+              $.ajax({  // resize event
                 async:false,
                 type: 'POST',
                 url:"/calendar/resize-event",
@@ -96,7 +96,8 @@
           },
           eventDrop: function(event, delta, revertFunc, jsEvent, ui, view) { // MOVE EVENT
             var data=new Object();
-            data.id = event.id;
+            data.id = event.id;;
+            data.allDay = event.allDay ? '1' : '0';
             data.delta = delta.asMinutes();
 
             if (shift.shifted) {
@@ -146,12 +147,14 @@
 
       });
 
-    function addevent(uid, start, end, allDay)
+    function addevent(uid, start, end, isAllDay)
     {
 
         var title = $('#'+uid+'_eventname').val();
         var note =  $('#'+uid+'_eventnote').val();
         var tags = $('#'+uid+'_eventtags').val();
+        var allDay = $('#'+uid+'_eventallday').is(':checked') ? '1' : '0';
+        var repeatEvent = $('#'+uid+'_repeatevent').val();
 
         jQuery.post(
             '/calendar/insert-event',
@@ -159,9 +162,10 @@
                 title: title,
                 start: start,
                 end: end,
-                allDay: allDay,
                 note: note,
-                tags: tags
+                tags: tags,
+                allDay: allDay,
+                repeatEvent: repeatEvent
             },
             function(res) {
               try
@@ -190,12 +194,14 @@
         );
     }
 
-    function saveevent(uid, start, end, allDay)
+    function saveevent(uid, start, end, isAllDay)
     {
         var id = $('#'+uid+'_eventid').val();
         var title = $('#'+uid+'_eventname').val();
         var note = $('#'+uid+'_eventnote').val();
         var tags = $('#'+uid+'_eventtags').val();
+        var allDay = $('#'+uid+'_eventallday').is(':checked') ? '1' : '0';
+        var repeatEvent = $('#'+uid+'_repeatevent').val();
 
         if (title) {
           jQuery.post(
@@ -205,9 +211,10 @@
                   title: title,
                   start: start,
                   end: end,
-                  allDay: allDay,
                   note: note,
-                  tags: tags
+                  tags: tags,
+                  allDay: allDay,
+                  repeatEvent: repeatEvent
               },
               function(res) {
                 try
@@ -217,17 +224,6 @@
                   clickedevent.start = res.start;
                   clickedevent.end = res.end;
 
-                   /*id:res.id,
-                        event_type:res.event_type,
-                        title: res.title,
-                        description: res.description,
-                        start: res.start,
-                        end: res.end,
-                        allDay: res.allDay,
-                        color: res.color,
-                        editable: true,
-                        startEditable: true,
-                        durationEditable: true*/
                   calendar.fullCalendar('updateEvent', clickedevent);
                 }
                 catch(e)

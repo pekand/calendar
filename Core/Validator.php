@@ -13,7 +13,7 @@ abstract class Validator extends ContainerAware {
     }
 
     function getParams() {
-        $this->params= $params;
+        return $this->params;
     }
 
     function isValid() {
@@ -131,7 +131,31 @@ abstract class Validator extends ContainerAware {
     public function isInteger($paramName,  $errorMessage = "Is not valid integer.") {
         $value = $this->getValue($paramName);
 
-        if (!is_int($value)) {
+        if (!is_numeric($value)) {
+            $this->addError($paramName, $errorMessage);
+            $this->valid = false;
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isInInterval($paramName, $start, $end,  $errorMessage = "Is not in interval.") {
+        $value = $this->getValue($paramName);
+
+        if (!is_numeric($value) || $value<$start || $end<$value) {
+            $this->addError($paramName, $errorMessage);
+            $this->valid = false;
+            return false;
+        }
+
+        return true;
+    }
+
+    public function isBool($paramName,  $errorMessage = "Is not valid bool.") {
+        $value = $this->getValue($paramName);
+
+        if (!is_numeric($value)) {
             $this->addError($paramName, $errorMessage);
             $this->valid = false;
             return false;
