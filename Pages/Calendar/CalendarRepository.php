@@ -13,8 +13,8 @@ class CalendarRepository extends Service
     {
         $db = $this->container->get('Database');
 
-        $result = $db->query("
-          SELECT
+        $result = $db->query(
+            "SELECT
             'event' as typ,
             a.id,
             a.user_id,
@@ -29,8 +29,9 @@ class CalendarRepository extends Service
           FROM
             calendar a
           WHERE
-            :start <= a.event_begin and
-            a.event_end <= :end;
+            (:start <= a.event_begin and
+            a.event_end <= :end) or
+            (repeatEvent is not null and repeatEvent>0);
         ", array(
             ":start"=>$start,
             ":end"=>$end,
@@ -39,7 +40,7 @@ class CalendarRepository extends Service
         $events = array();
         if(is_array($result))foreach($result as $value)
         {
-            $events[] = array(
+            $event = array(
                 'id' => $value['id'],
                 'title' => $value['name'],
                 'start' => date("Y-m-d H:i:s",strtotime($value['event_begin'])),
@@ -52,6 +53,43 @@ class CalendarRepository extends Service
                 'editable' => ($value['user_id'] == $userId),
                 'repeatEvent' => $value['repeatEvent'],
             );
+
+            $events[] = $event;
+
+            if ($value['repeatEvent']>0) {
+                $currentStart = $value['event_begin'];
+                $currentEnd = $value['event_end'];
+
+
+                $add = " +1 day";
+                switch ($value['repeatEvent']) {
+                    case 1:
+                        $add = " +1 day";
+                        break;
+                    case 2:
+                        $add = " +1 day";
+                        break;
+                    case 3:
+                        $add = " +1 months";
+                        break;
+                }
+
+                $i=0;
+                while (strtotime($currentStart) < strtotime($end)) {
+
+                        $currentStart = date('Y-m-d H:i:s', strtotime($currentStart . $add));
+                        $currentEnd  = date('Y-m-d H:i:s', strtotime($currentEnd . $add));
+                        $event['start'] = $currentStart;
+                        $event['end']  = $currentEnd;
+
+                        $events[] = $event;
+                        $i++;
+                        if ($i>100) {
+                            break;
+                        }
+                }
+            }
+
         }
 
         return $events;
