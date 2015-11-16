@@ -12,17 +12,17 @@
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6">
                             <div class="form-group">
-                            <input type='text' id='<?=$uid?>_eventstart'  placeholder='Start' value='<?=$start?>' class="form-control input-sm" />
+                            <input type='text' id='<?=$uid?>_eventstart'  placeholder='Start' value='<?=htmlspecialchars($start)?>' class="form-control input-sm" />
                             </div>
                         </div>
                         <div class="col-xs-6 col-sm-6 col-md-6">
                             <div class="form-group">
-                                <input type='text' id='<?=$uid?>_eventend' placeholder='End' value='<?=$end?>' class="form-control input-sm" />
+                                <input type='text' id='<?=$uid?>_eventend' placeholder='End' value='<?=htmlspecialchars($end)?>' class="form-control input-sm" />
                             </div>
                         </div>
                     </div>
                     <div class="form-group">
-                          <textarea  id='<?=$uid?>_eventnote' class="form-control"></textarea>
+                          <textarea  id='<?=$uid?>_eventnote' class="form-control" style="height: 280px;"></textarea>
                     </div>
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6">

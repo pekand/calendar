@@ -4,10 +4,10 @@
                 <form>
                     <input type='hidden' id='<?=$uid?>_eventid' value='<?=htmlspecialchars($id)?>' />
                     <div class="form-group">
-                        <input type='text' id='<?=$uid?>_eventname' style='width:100%;' placeholder='Name' class="form-control error" value='<?=htmlspecialchars($name)?>' />
+                        <input type='text' id='<?=$uid?>_eventname' style='width:100%;' placeholder='Name' class="form-control error" value='<?=htmlspecialchars($name, ENT_QUOTES, false)?>' />
                     </div>
                     <div class="form-group">
-                          <input type='text' id='<?=$uid?>_eventtags' style='width:100%;margin-top:10px;' placeholder='Tags' class="form-control" value='<?=htmlspecialchars($tags)?>' />
+                          <input type='text' id='<?=$uid?>_eventtags' style='width:100%;margin-top:10px;' placeholder='Tags' class="form-control" value='<?=htmlspecialchars($tags, ENT_QUOTES, false)?>' />
                     </div>
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6">
@@ -22,7 +22,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                          <textarea  id='<?=$uid?>_eventnote' class="form-control"><?=htmlspecialchars($note)?></textarea>
+                          <textarea  id='<?=$uid?>_eventnote' class="form-control" style="height: 280px;"><?=htmlspecialchars($note)?></textarea>
                     </div>
                     <div class="row">
                         <div class="col-xs-6 col-sm-6 col-md-6">
